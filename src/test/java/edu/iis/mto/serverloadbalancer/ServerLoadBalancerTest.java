@@ -94,6 +94,26 @@ public class ServerLoadBalancerTest {
         assertThat("the server contains the Vm ", !theServer.contains(theVm));
     }
 
+    @Test
+    public void balance_serversAndVms(){
+        Server server1=a(server().withCapacity(4));
+        Server server2=a(server().withCapacity(6));
+
+        Vm vm1=a(vm().withSize(2));
+        Vm vm2=a(vm().withSize(4));
+        Vm vm3=a(vm().withSize(1));
+
+
+        balance(listOfServers(server1,server2), listOfVms(vm1,vm2,vm3));
+
+        assertThat("teh server contains the Vm ", server1.contains(vm1));
+        assertThat("teh server contains the Vm ", server2.contains(vm2));
+        assertThat("teh server contains the Vm ", server1.contains(vm3));
+
+        assertThat(server1, hasCurrentLoadOf(75.0d));
+        assertThat(server2, hasCurrentLoadOf(66.66d));
+    }
+
 
 
     private Vm[] listOfVms(Vm... vms) {
