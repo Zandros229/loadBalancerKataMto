@@ -12,12 +12,16 @@ public class ServerBuilder implements Builder<Server> {
     public Server build() {
         Server server=new Server(capacity);
 
+        addInitialLoad(server);
+        return server;
+    }
+
+    private void addInitialLoad(Server server) {
         if(initialLoadOf>0){
-            int initialSizeOfVm=(int)(initialLoadOf/ 100.0d *capacity);
-            Vm initialVm=VmBuilder.vm().withSize(initialSizeOfVm).build();
+            int initialSizeOfVm=(int)(initialLoadOf/ Server.MAXIMUM_LOAD *capacity);
+            Vm initialVm= VmBuilder.vm().withSize(initialSizeOfVm).build();
             server.addVm(initialVm);
         }
-        return server;
     }
 
     public static ServerBuilder server() {
