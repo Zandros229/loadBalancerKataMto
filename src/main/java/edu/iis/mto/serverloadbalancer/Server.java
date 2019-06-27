@@ -16,6 +16,6 @@ public class Server {
     }
 
     public void addVm(Vm vm) {
-        this.currentLoadPercentage=currentLoadPercentage=(double)vm.size / (double)this.capacity * MAXIMUM_LOAD;
+        this.currentLoadPercentage = currentLoadPercentage = (double) vm.size / (double) this.capacity * MAXIMUM_LOAD;
     }
 }
