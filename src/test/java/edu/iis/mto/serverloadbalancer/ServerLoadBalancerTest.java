@@ -8,7 +8,6 @@ import static edu.iis.mto.serverloadbalancer.VmBuilder.vm;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-import org.hamcrest.Matcher;
 import org.junit.Test;
 
 public class ServerLoadBalancerTest {
@@ -62,6 +61,22 @@ public class ServerLoadBalancerTest {
         assertThat(theServer, hasAmountOfVms(2));
         assertThat("teh server contains the Vm ", theServer.contains(vm1));
         assertThat("teh server contains the Vm ", theServer.contains(vm2));
+    }
+
+    @Test
+    public void aVm_shouldBeBalanced_onLessLoadedServerFirst(){
+        Server moreLoadedServer=a(server().withCapacity(10).withInitialLoadOf(50.0d));
+        Server lessLoadedServer=a(server().withCapacity(10).withInitialLoadOf(45.0d));
+
+        Vm vm1=a(vm().withSize(1));
+
+
+
+        balance(listOfServers(moreLoadedServer,lessLoadedServer), listOfVms(vm1));
+
+
+        assertThat("teh server contains the Vm ", lessLoadedServer.contains(vm1));
+        assertThat("teh server contains the Vm ", !moreLoadedServer.contains(vm1));
     }
 
 
